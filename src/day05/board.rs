@@ -37,24 +37,19 @@ struct Edge {
 
 impl Edge {
     pub fn nodes_between(&self) -> Vec<Node> {
-        if self.from.x == self.to.x {
-            let y_start = cmp::min(self.from.y, self.to.y);
-            let y_end = cmp::max(self.from.y, self.to.y);
-            return (y_start..=y_end).map(|y| Node {
-                x: self.from.x,
-                y: y,
-            }).collect();
+        let x_delta = calc_delta(self.from.x, self.to.x);
+        let y_delta = calc_delta(self.from.y, self.to.y);
+
+        let length = cmp::max(self.to.x.abs_diff(self.from.x), self.to.y.abs_diff(self.from.y));
+        let (mut x, mut y) = (self.from.x as i32, self.from.y as i32);
+        let mut nodes = vec![];
+        
+        for _i in 0..=length {
+            nodes.push(Node {x: x as usize, y: y as usize});
+            x += x_delta;
+            y += y_delta;
         }
-        if self.from.y == self.to.y {
-            let x_start = cmp::min(self.from.x, self.to.x);
-            let x_end = cmp::max(self.from.x, self.to.x);
-            return (x_start..=x_end).map(|x| Node {
-                x: x,
-                y: self.from.y,
-            }).collect();
-        }
-        // disregard diagonals
-        return vec![];
+        return nodes;
     }
 
     pub fn new(line: &str) -> Self {
@@ -100,4 +95,15 @@ impl Board {
         }
         return count;
     }
+}
+
+
+fn calc_delta(start: usize, end: usize) -> i32 {
+    if start == end {
+        return 0;
+    }
+    if start < end {
+        return 1;
+    }
+    return -1;
 }
