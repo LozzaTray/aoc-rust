@@ -71,7 +71,7 @@ impl Board {
 
         while let Some(pos) = to_check.pop() {
             if in_basin[pos.0][pos.1] {
-                break;
+                continue;
             }
             let height = self.heights[pos.0][pos.1];
             //println!("{:?} - {}", pos, height);
