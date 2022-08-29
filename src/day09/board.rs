@@ -70,6 +70,9 @@ impl Board {
         let mut to_check = vec![(i, j)];
 
         while let Some(pos) = to_check.pop() {
+            if in_basin[pos.0][pos.1] {
+                break;
+            }
             let height = self.heights[pos.0][pos.1];
             //println!("{:?} - {}", pos, height);
             in_basin[pos.0][pos.1] = true;
@@ -85,9 +88,9 @@ impl Board {
             to_check.extend(next_neighbours);
         }
 
-        // let mut line = "".to_string();
-        // for a in 0..cmp::max(i + 20, self.n) {
-        //     for b in 0..cmp::max(j + 20, self.m) {
+        // for a in 0..self.n {
+        //     let mut line = "".to_string();
+        //     for b in 0..self.m {
         //         if in_basin[a][b] {
         //             line = line + &(self.heights[a][b].to_string() + "* ");
         //         } else {
@@ -95,15 +98,6 @@ impl Board {
         //         }
         //     }
         //     println!("{}", line);
-        // }
-
-        // for line in in_basin {
-        //     println!("{:?}", line.iter().map(|b| {
-        //         if *b {
-        //             return "1".to_owned();
-        //         }
-        //         return "0".to_owned();
-        //     }).reduce(|a, b| a + b.as_str()).unwrap());
         // }
 
         size_of_basin
