@@ -118,7 +118,7 @@ impl Panel {
             let num_segments = input.num_segments_activated();
 
             if num_segments == 2 {
-                mut one = input;
+                //mut one = input;
             }
         }
         for input in self.inputs.into_iter() {
